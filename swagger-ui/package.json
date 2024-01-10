@@ -1,0 +1,11 @@
+{
+  "name": "ui",
+  "version": "1.0.0",
+  "description": "Swagger API Documentation",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf dist && mkdir -p dist && cd src && zip -r ../dist/swagger-ui-content.zip ./*"
+  },
+  "author": "",
+  "license": "ISC"
+}

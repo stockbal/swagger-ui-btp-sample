@@ -1,0 +1,72 @@
+_schema-version: "3.1"
+ID: swagger-ui
+version: 1.0.0
+description: "Swagger API documentation"
+
+parameters:
+  deploy_mode: html5-repo
+
+modules:
+  - name: swagger-ui-dest-content
+    type: com.sap.application.content
+    requires:
+      - name: swagger-ui-destination-service
+        parameters:
+          content-target: true
+      - name: swagger-ui-repo-host
+        parameters:
+          service-key:
+            name: swagger-ui-repo-host-key
+    parameters:
+      content:
+        subaccount:
+          destinations:
+            - Name: swagger-ui-repo-host
+              ServiceInstanceName: swagger-ui-repo-host
+              ServiceKeyName: swagger-ui-repo-host-key
+              sap.cloud.service: swaggerui
+          existing_destinations_policy: update
+    build-parameters:
+      no-source: true
+
+  - name: swagger-ui-app-content
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: swagger-ui-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: /resources
+      requires:
+        - artifacts:
+            - swagger-ui-content.zip
+          name: swagger-ui
+          target-path: resources/
+
+  - name: swagger-ui
+    type: html5
+    path: ./swagger-ui
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm run build
+      supported-platforms: []
+
+resources:
+  - name: swagger-ui-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        HTML5Runtime_enabled: true
+        version: 1.0.0
+      service: destination
+      service-name: swagger-ui-destination-service
+      service-plan: lite
+
+  - name: swagger-ui-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
