@@ -1,0 +1,72 @@
+_schema-version: "3.1"
+ID: apidocs
+version: 1.0.0
+description: "Swagger API documentation"
+
+parameters:
+  deploy_mode: html5-repo
+
+modules:
+  - name: apidocs-dest-content
+    type: com.sap.application.content
+    requires:
+      - name: apidocs-destination-service
+        parameters:
+          content-target: true
+      - name: apidocs-repo-host
+        parameters:
+          service-key:
+            name: apidocs-repo-host-key
+    parameters:
+      content:
+        subaccount:
+          destinations:
+            - Name: apidocs-repo-host
+              ServiceInstanceName: apidocs-repo-host
+              ServiceKeyName: apidocs-repo-host-key
+              sap.cloud.service: apidocs
+          existing_destinations_policy: update
+    build-parameters:
+      no-source: true
+
+  - name: apidocs-app-content
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: apidocs-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: /resources
+      requires:
+        - artifacts:
+            - apidocs-content.zip
+          name: apidocs
+          target-path: resources/
+
+  - name: apidocs
+    type: html5
+    path: ./api-docs
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm run build
+      supported-platforms: []
+
+resources:
+  - name: apidocs-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        HTML5Runtime_enabled: true
+        version: 1.0.0
+      service: destination
+      service-name: apidocs-destination-service
+      service-plan: lite
+
+  - name: apidocs-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host

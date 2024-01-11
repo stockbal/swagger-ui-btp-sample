@@ -1,5 +1,5 @@
 _schema-version: "3.1"
-ID: swagger-ui
+ID: apidocs
 version: 1.0.0
 description: "Swagger API documentation"
 
@@ -7,46 +7,46 @@ parameters:
   deploy_mode: html5-repo
 
 modules:
-  - name: swagger-ui-dest-content
+  - name: apidocs-dest-content
     type: com.sap.application.content
     requires:
-      - name: swagger-ui-destination-service
+      - name: apidocs-destination-service
         parameters:
           content-target: true
-      - name: swagger-ui-repo-host
+      - name: apidocs-repo-host
         parameters:
           service-key:
-            name: swagger-ui-repo-host-key
+            name: apidocs-repo-host-key
     parameters:
       content:
         subaccount:
           destinations:
-            - Name: swagger-ui-repo-host
-              ServiceInstanceName: swagger-ui-repo-host
-              ServiceKeyName: swagger-ui-repo-host-key
-              sap.cloud.service: swaggerui
+            - Name: apidocs-repo-host
+              ServiceInstanceName: apidocs-repo-host
+              ServiceKeyName: apidocs-repo-host-key
+              sap.cloud.service: apidocs
           existing_destinations_policy: update
     build-parameters:
       no-source: true
 
-  - name: swagger-ui-app-content
+  - name: apidocs-app-content
     type: com.sap.application.content
     path: .
     requires:
-      - name: swagger-ui-repo-host
+      - name: apidocs-repo-host
         parameters:
           content-target: true
     build-parameters:
       build-result: /resources
       requires:
         - artifacts:
-            - swagger-ui-content.zip
-          name: swagger-ui
+            - apidocs-content.zip
+          name: apidocs
           target-path: resources/
 
-  - name: swagger-ui
+  - name: apidocs
     type: html5
-    path: ./swagger-ui
+    path: ./api-docs
     build-parameters:
       build-result: dist
       builder: custom
@@ -55,17 +55,17 @@ modules:
       supported-platforms: []
 
 resources:
-  - name: swagger-ui-destination-service
+  - name: apidocs-destination-service
     type: org.cloudfoundry.managed-service
     parameters:
       config:
         HTML5Runtime_enabled: true
         version: 1.0.0
       service: destination
-      service-name: swagger-ui-destination-service
+      service-name: apidocs-destination-service
       service-plan: lite
 
-  - name: swagger-ui-repo-host
+  - name: apidocs-repo-host
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo

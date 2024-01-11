@@ -1,0 +1,21 @@
+html {
+  box-sizing: border-box;
+  overflow: -moz-scrollbars-vertical;
+  overflow-y: scroll;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  background: #fafafa;
+}
+
+/* Required because dark mode for swagger does not exist */
+.sapMPageBgStandard {
+  background: #f5f6f7 !important;
+}

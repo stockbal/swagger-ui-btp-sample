@@ -1,0 +1,15 @@
+{
+  "name": "apidocs",
+  "version": "1.0.0",
+  "description": "Swagger API Documentation",
+  "scripts": {
+    "build": "npm run clean && npx -p mbt mbt build --mtar archive",
+    "clean": "rimraf resources mta_archives",
+    "deploy": "cf deploy mta_archives/archive.mtar"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "rimraf": "^5.0.5"
+  }
+}

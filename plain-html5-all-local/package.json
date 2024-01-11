@@ -1,9 +1,9 @@
 {
-  "name": "swagger",
+  "name": "apidocs",
   "version": "1.0.0",
   "description": "Swagger API Documentation",
   "scripts": {
-    "build": "npx -p mbt mbt build --mtar archive",
+    "build": "npm run clean && npx -p mbt mbt build --mtar archive",
     "clean": "rimraf resources mta_archives",
     "deploy": "cf deploy mta_archives/archive.mtar"
   },

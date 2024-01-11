@@ -1,0 +1,15 @@
+{
+  "_version": "1.7.0",
+  "sap.cloud": {
+    "public": true,
+    "service": "swaggerui"
+  },
+  "sap.app": {
+    "id": "swagger-ui",
+    "title": "Swagger UI",
+    "type": "application",
+    "applicationVersion": {
+      "version": "1.0.0"
+    }
+  }
+}

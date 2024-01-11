@@ -1,0 +1,14 @@
+<mvc:View controllerName="apidocs.controller.App"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m">
+    <App id="_IDGenApp1">
+        <Page id="_IDGenPage1"
+            showHeader="false">
+            <VBox id="_IDGenVBox1">
+                <html:div id="swagger-ui" />
+            </VBox>
+        </Page>
+    </App>
+</mvc:View>
