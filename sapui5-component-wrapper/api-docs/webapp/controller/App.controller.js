@@ -1,29 +1,30 @@
-sap.ui.define(["sap/ui/core/mvc/Controller"], function (BaseController) {
-  "use strict";
+sap.ui.define(
+  ["sap/ui/core/mvc/Controller", "swagger-ui-dist"],
+  function (BaseController, SwaggerUI) {
+    "use strict";
 
-  return BaseController.extend("apidocs.controller.App", {
-    onInit: function () {
-      this._swaggerLoaded = false;
-    },
-    onAfterRendering() {
-      if (this._swaggerLoaded) return;
+    const { SwaggerUIBundle } = SwaggerUI;
 
-      // load the swagger UI into the predefined element
-      this._swaggerUi = SwaggerUIBundle({
-        url: sap.ui.require.toUrl("apidocs/model/specs.json"),
-        dom_id: `#${this.byId("swagger-ui").getId()}`,
-        deepLinking: true,
-        presets: [
-          SwaggerUIBundle.presets.apis
-          // SwaggerUIStandalonePreset
-        ]
-        // plugins: [
-        //   SwaggerUIBundle.plugins.DownloadUrl
-        // ],
-        // layout: "StandaloneLayout"
-      });
+    return BaseController.extend("apidocs.controller.App", {
+      onInit: function () {
+        this._swaggerLoaded = false;
+      },
+      onAfterRendering() {
+        if (this._swaggerLoaded) return;
 
-      this._swaggerLoaded = true;
-    }
-  });
-});
+        // REQUIRED: otherwise if string is used directly, ui5-tooling-modules-task will replace it with "apidocs/thirdparty/apidocs/model/specs.json"
+        const path = "apidocs/model/specs.json";
+
+        // load the swagger UI into the predefined element
+        this._swaggerUi = SwaggerUIBundle({
+          url: sap.ui.require.toUrl(path),
+          dom_id: `#${this.byId("swagger-ui").getId()}`,
+          deepLinking: true,
+          presets: [SwaggerUIBundle.presets.apis],
+        });
+
+        this._swaggerLoaded = true;
+      },
+    });
+  }
+);

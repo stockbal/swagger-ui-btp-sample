@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
-specVersion: '2.4'
+specVersion: "2.4"
 metadata:
   name: apidocs
 type: application
@@ -12,14 +12,25 @@ builder:
       - "/test/**"
       - "/localService/**"
   customTasks:
-  - name: webide-extension-task-updateManifestJson
-    afterTask: replaceVersion
-    configuration:
-      appFolder: webapp
-      destDir: dist
-  - name: ui5-task-zipper
-    afterTask: generateCachebusterInfo
-    configuration:
-      archiveName: apidocs
-      additionalFiles:
-      - xs-app.json
+    - name: webide-extension-task-updateManifestJson
+      afterTask: replaceVersion
+      configuration:
+        appFolder: webapp
+        destDir: dist
+    - name: ui5-tooling-modules-task
+      afterTask: replaceVersion
+      configuration:
+        debug: true
+        prependPathMappings: true        
+        addToNamespace: true
+        includeAssets:
+          "swagger-ui-dist":
+            - "**/*.css"
+    - name: ui5-task-zipper
+      afterTask: generateCachebusterInfo
+      configuration:
+        archiveName: apidocs
+        includeDependencies: true
+        onlyZip: false
+        additionalFiles:
+          - xs-app.json
